@@ -1,6 +1,10 @@
 import os
-
+import numpy as np
+import pandas as pd
+import datetime
+import pandas_datareader.data as web
 import dash
+from dash.dependencies import Input, Output
 import dash_core_components as dcc
 import dash_html_components as html
 
@@ -10,20 +14,41 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 server = app.server
 
-app.layout = html.Div([
-    html.H2('Hello World'),
-    dcc.Dropdown(
-        id='dropdown',
-        options=[{'label': i, 'value': i} for i in ['LA', 'NYC', 'MTL']],
-        value='LA'
-    ),
-    html.Div(id='display-value')
-])
+app.layout = html.Div(children=[
 
-@app.callback(dash.dependencies.Output('display-value', 'children'),
-              [dash.dependencies.Input('dropdown', 'value')])
-def display_value(value):
-    return 'You have selected "{}"'.format(value)
+    html.Div(children='''
+        Sumbol to graph:
+    '''),
 
+    dcc.Input(id='input', value='', type='text'),
+    html.Div(id='output_graph')
+    
+    ])
+
+@app.callback(
+    Output(component_id='output_graph', component_property='children'),
+    [Input(component_id='input', component_property='value')]
+)
+def update_graph(input_data):
+
+    try:
+        start = datetime.datetime(2015, 1, 1)
+        end = datetime.datetime.now()
+        df = web.get_data_yahoo(input_data, start, end)
+
+        return dcc.Graph(
+                id='example_graph', 
+                figure={
+                    'data': [
+                        {'x':df.index, 'y':df.Close, 'type':'line', 'name':input_data},
+                    ],
+                    'layout': {
+                        'title':input_data
+                    }
+                })
+    except:
+        return "Cannot find data of " + input_data
 if __name__ == '__main__':
     app.run_server(debug=True)
+
+
