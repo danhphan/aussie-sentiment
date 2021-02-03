@@ -8,3 +8,5 @@ dash-html-components==1.1.1
 dash-renderer==1.8.3
 dash-table==4.11.1
 regex>=2020.0.0
+python-memcached==1.59
+memcache
