@@ -94,7 +94,7 @@ class cache_memcached:
 cache = None
 
 # if dev - use sqlite
-if os.environ.get('dev', False):
+if True: # os.environ.get('dev', False):
     import sqlite3
     from threading import Timer
     import pickle
