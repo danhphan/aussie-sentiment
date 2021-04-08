@@ -23,7 +23,7 @@ import pickle
 
 # it's ok to use one shared sqlite connection
 # as we are making selects only, no need for any kind of serialization as well
-conn = sqlite3.connect('twitter.db', check_same_thread=False)
+conn = sqlite3.connect('./data/twitter.db', check_same_thread=False)
 
 punctuation = [str(i) for i in string.punctuation]
 
@@ -278,10 +278,7 @@ def update_graph_scatter(sentiment_term, intervals):
             df = pd.read_sql("SELECT * FROM sentiment ORDER BY id DESC, unix DESC LIMIT 1000", conn)
         df.sort_values('unix', inplace=True)
         df['date'] = pd.to_datetime(df['unix'], unit='ms')
-        df.set_index('date', inplace=True)
-        init_length = len(df)
-        df['sentiment_smoothed'] = df['sentiment'].rolling(int(len(df)/5)).mean()
-        df = df_resample_sizes(df)
+        df.set_index('date', inplace=True)graph_objs
         X = df.index
         Y = df.sentiment_smoothed.values
         Y2 = df.volume.values
