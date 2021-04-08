@@ -24,15 +24,15 @@ from textblob import TextBlob
 
 analyzer = SentimentIntensityAnalyzer()
 
-# Facebook consumer key, consumer secret, access token, access secret.
-# ckey="AuD5be2saN7fQZSaQ9OY9Y5w0C"
-# csecret="vqWDPLGAx5MoNe8ELlocJ2zfARgnetIFoJXlsSH1ACBrRZjMefB"
-# atoken="C86935267-XH1dJF8RQQ5wDNtkGt5RHcrEivGaHcGGflLtVdZFL"
-# asecret="ZPawPJA7WG9FZHPXrTLHTpXV6oJIW4tr9BseWohEP8NQoD"
+# Twitter consumer key, consumer secret, access token, access secret.
+ckey=os.environ.get('TWITTER_CUSTOMER_KEY')
+csecret=os.environ.get('TWITTER_CUSTOMER_SECRET')
+atoken=os.environ.get('TWITTER_ACCESS_KEY')
+asecret=os.environ.get('TWITTER_ACCESS_SECRET')
 
 # isolation lever disables automatic transactions,
 # we are disabling thread check as we are creating connection here, but we'll be inserting from a separate thread (no need for serialization)
-conn = sqlite3.connect('twitter.db', isolation_level=None, check_same_thread=False)
+conn = sqlite3.connect('./data/twitter.db', isolation_level=None, check_same_thread=False)
 c = conn.cursor()
 
 def create_table():
