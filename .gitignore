@@ -5,3 +5,5 @@ venv
 errors.txt
 .gitignore
 __pycache__
+nbs/.ipynb_checkpoints/
+data/
